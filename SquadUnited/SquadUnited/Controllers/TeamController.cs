@@ -12,6 +12,7 @@ namespace SquadUnited.Controllers
     public class TeamController : ControllerBase
     {
         private readonly ITeamRepository _teamRepository;
+        private readonly IUserRepository _userRepository;
 
         public TeamController(ITeamRepository teamRepository)
         {
@@ -24,10 +25,11 @@ namespace SquadUnited.Controllers
             return Ok(_teamRepository.GetAllActiveTeams());
         }
 
-        [HttpGet("GetUserTeams/{id}")]
-        public IActionResult GetTeamsByUser(int Id) 
+        [HttpGet("GetTeamsByCurrentUser")]
+        public IActionResult GetTeamsByCurrentUser(string firebaseUserId) 
         {
-            List<Team> teams = _teamRepository.GetTeamsByUserId(Id);
+            User user = _userRepository.GetByFirebaseUserId(firebaseUserId);
+            List<Team> teams = _teamRepository.GetTeamsByUserId(user.Id);
             if (teams == null)
             {
                 return NotFound();
