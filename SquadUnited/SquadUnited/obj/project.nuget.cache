@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "U3Aa1miTr4GhfY498xx+XO0o9Y9FnQCDNLCa5R6pOn9bro7FrQfJHc4G1S5vWsfGYbVyRtnTJypThARPNxoAPQ==",
+  "dgSpecHash": "7q1JfW3rVmJvR65oSyQNrkHdt0dJJHhMReXLai0RgKdRrkx6cZ1+5CvP79MpbrWkGBVS0Wtp4Uf16scmxWJ+OQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\jacob\\workspace\\csharp\\SquadUnited-NSS-FS-Capstone\\SquadUnited\\SquadUnited\\SquadUnited.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jacob\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\jacob\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
+    "C:\\Users\\jacob\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.5\\microsoft.aspnetcore.authentication.jwtbearer.5.0.5.nupkg.sha512",
     "C:\\Users\\jacob\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\jacob\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\jacob\\.nuget\\packages\\microsoft.data.sqlclient\\5.1.1\\microsoft.data.sqlclient.5.1.1.nupkg.sha512",
