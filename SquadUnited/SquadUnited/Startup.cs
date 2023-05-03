@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SquadUnited.Repositories;
 
 namespace SquadUnited
 {
@@ -29,10 +30,7 @@ namespace SquadUnited
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SquadUnited", Version = "v1" });
-            });
+            services.AddTransient<IUserRepository, UserRepository>();
 
             var firebaseProjectId = Configuration.GetValue<string>("FirebaseProjectId");
             var googleTokenUrl = $"https://securetoken.google.com/{firebaseProjectId}";

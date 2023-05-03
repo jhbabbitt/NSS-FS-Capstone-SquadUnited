@@ -5,7 +5,7 @@ using System.Security.Claims;
 using SquadUnited.Models;
 using SquadUnited.Repositories;
 
-namespace Tabloid.Controllers
+namespace SquadUnited.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
