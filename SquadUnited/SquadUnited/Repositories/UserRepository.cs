@@ -18,9 +18,9 @@ namespace SquadUnited.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT up.Id, Up.FirebaseUserId, up.Name, 
+                        SELECT up.Id, up.FirebaseUserId, up.Name, 
                                up.Email, up.IsActive
-                          FROM User up
+                          FROM [User] up
                          WHERE FirebaseUserId = @FirebaseuserId";
 
                     DbUtils.AddParameter(cmd, "@FirebaseUserId", firebaseUserId);
@@ -56,7 +56,7 @@ namespace SquadUnited.Repositories
                     cmd.CommandText = @"
                         SELECT up.Id, Up.FirebaseUserId, up.Name, 
                                up.Email, up.IsActive
-                          FROM User up
+                          FROM [User] up
                          WHERE up.Id = @id";
 
                     DbUtils.AddParameter(cmd, "@id", id);
@@ -91,7 +91,7 @@ namespace SquadUnited.Repositories
                 {
                     cmd.CommandText = @"SELECT up.Id, Up.FirebaseUserId, up.Name, 
                                                 up.Email, up.IsActive
-                                        FROM User up";
+                                        FROM [User] up";
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -120,7 +120,7 @@ namespace SquadUnited.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO User (FirebaseUserId, Name, 
+                    cmd.CommandText = @"INSERT INTO [User] (FirebaseUserId, Name, 
                                                                  Email, IsActive)
                                         OUTPUT INSERTED.ID
                                         VALUES (@FirebaseUserId, @Name, 
@@ -142,7 +142,7 @@ namespace SquadUnited.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"UPDATE User
+                    cmd.CommandText = @"UPDATE [User]
                                         SET
                                             Name = @Name,
                                             Email = @email,

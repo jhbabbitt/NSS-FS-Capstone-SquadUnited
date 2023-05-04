@@ -81,7 +81,17 @@ namespace SquadUnited.Controllers
 
         }
 
+        [HttpGet("Me")]
+        public IActionResult Me()
+        {
+            var user = GetCurrentUser();
+            if (user == null)
+            {
+                return NotFound();
+            }
 
+            return Ok(user);
+        }
         private User GetCurrentUser()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
