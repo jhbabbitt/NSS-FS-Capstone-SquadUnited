@@ -14,9 +14,10 @@ namespace SquadUnited.Controllers
         private readonly ITeamRepository _teamRepository;
         private readonly IUserRepository _userRepository;
 
-        public TeamController(ITeamRepository teamRepository)
+        public TeamController(ITeamRepository teamRepository, IUserRepository userRepository)
         {
             _teamRepository = teamRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet]

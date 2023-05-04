@@ -27,10 +27,9 @@ export default function Header({ isLoggedIn, userProfile }) {
                         {isLoggedIn && (
                             <>
                                 <>
-                                    <div>Hello {userProfile?.Name}</div>
                                     <NavItem>
                                         <NavLink tag={RRNavLink} to="/">
-                                            Home
+                                            My Teams
                                         </NavLink>
                                     </NavItem>
                                 </>
