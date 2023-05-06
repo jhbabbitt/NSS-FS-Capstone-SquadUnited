@@ -4,6 +4,7 @@ using System;
 using System.Security.Claims;
 using SquadUnited.Models;
 using SquadUnited.Repositories;
+using System.Collections.Generic;
 
 namespace SquadUnited.Controllers
 {
@@ -42,6 +43,24 @@ namespace SquadUnited.Controllers
         {
             var currentUser = GetCurrentUser();
             return Ok(_userRepository.GetUsers());
+        }
+
+        [HttpGet("GetPlayersOnATeam")]
+        public IActionResult GetPlayersOnATeam(int teamId)
+        {
+            List<User> players = _userRepository.GetPlayersOnATeam(teamId);
+            return Ok(players);
+        }
+
+        [HttpGet("GetCaptainsOnATeam")]
+        public IActionResult GetCaptainsOnATeam(int teamId)
+        {
+            List<User> players = _userRepository.GetCaptainsOnATeam(teamId);
+            if (players == null)
+            {
+                return NotFound();
+            }
+            return Ok(players);
         }
 
         [HttpGet("details/{id}")]

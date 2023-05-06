@@ -113,6 +113,78 @@ namespace SquadUnited.Repositories
             }
         }
 
+        public List<User> GetPlayersOnATeam(int teamId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT up.Id AS UserId, Up.FirebaseUserId, up.Name, 
+                                                up.Email, up.IsActive AS ActiveProfile,
+                                                t.Id AS TeamId, t.IsActive AS ActiveTeam,
+                                                ut.Id, ut.RoleId
+                                        FROM [User] up
+                                        LEFT JOIN UserTeam ut on ut.UserId = up.Id
+                                        LEFT JOIN Team t on t.Id = ut.TeamId
+                                        WHERE t.IsActive = 1 AND up.IsActive = 1 AND ut.RoleId = 2 AND ut.TeamId = @id";
+                    cmd.Parameters.AddWithValue("@id", teamId);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var users = new List<User>();
+                        while (reader.Read())
+                        {
+                            users.Add(new User()
+                            {
+                                Id = DbUtils.GetInt(reader, "UserId"),
+                                FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
+                                Name = DbUtils.GetString(reader, "Name"),
+                                Email = DbUtils.GetString(reader, "Email"),
+                                IsActive = DbUtils.GetBool(reader, "ActiveProfile"),
+                            });
+                        }
+                        return users;
+                    }
+                }
+            }
+        }
+
+        public List<User> GetCaptainsOnATeam(int teamId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT up.Id AS UserId, Up.FirebaseUserId, up.Name, 
+                                                up.Email, up.IsActive AS ActiveProfile,
+                                                t.Id AS TeamId, t.IsActive AS ActiveTeam,
+                                                ut.Id, ut.RoleId
+                                        FROM [User] up
+                                        LEFT JOIN UserTeam ut on ut.UserId = up.Id
+                                        LEFT JOIN Team t on t.Id = ut.TeamId
+                                        WHERE t.IsActive = 1 AND up.IsActive = 1 AND ut.RoleId = 1 AND ut.TeamId = @id";
+                    cmd.Parameters.AddWithValue("@id", teamId);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var users = new List<User>();
+                        while (reader.Read())
+                        {
+                            users.Add(new User()
+                            {
+                                Id = DbUtils.GetInt(reader, "UserId"),
+                                FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
+                                Name = DbUtils.GetString(reader, "Name"),
+                                Email = DbUtils.GetString(reader, "Email"),
+                                IsActive = DbUtils.GetBool(reader, "ActiveProfile"),
+                            });
+                        }
+                        return users;
+                    }
+                }
+            }
+        }
+
         public void Add(User user)
         {
             using (var conn = Connection)
@@ -165,5 +237,7 @@ namespace SquadUnited.Repositories
                 }
             }
         }
+
+
     }
 }

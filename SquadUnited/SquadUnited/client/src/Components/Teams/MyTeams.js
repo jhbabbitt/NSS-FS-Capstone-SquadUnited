@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getMyTeams } from "../../Modules/teamManager";
+import { Link } from "react-router-dom";
 
 const MyTeams = () => {
     const [teams, setTeams] = useState([]);
@@ -19,7 +20,9 @@ const MyTeams = () => {
                     <div key={team.id}>
                         <p>{team.name}</p>
                         <p>{team.league.name}</p>
-                        <button>View Details</button>
+                        <Link to={`/team/${team.id}`}>
+                            <button>View Details</button>
+                        </Link>
                     </div>
                 ))}
             </div>

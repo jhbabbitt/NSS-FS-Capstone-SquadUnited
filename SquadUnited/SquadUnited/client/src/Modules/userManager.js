@@ -2,12 +2,11 @@ import { getToken } from "./authManager"
 import "firebase/auth"
 import firebase from "firebase/app"
 
-const baseUrl = "/api/team"
+const baseUrl = "/api/user"
 
-export const getMyTeams = () => {
-  const user = firebase.auth().currentUser
+export const getPlayersOnATeam = (id) => {
   return getToken().then((token) =>
-    fetch(`${baseUrl}/GetTeamsByCurrentUser?firebaseUserId=${user.uid}`, {
+    fetch(`${baseUrl}/GetPlayersOnATeam?teamId=${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -15,9 +14,9 @@ export const getMyTeams = () => {
     }).then((response) => response.json()))
 }
 
-export const getTeam = (id) => {
+export const getCaptainsOnATeam = (id) => {
   return getToken().then((token) =>
-    fetch(`${baseUrl}/${id}`, {
+    fetch(`${baseUrl}/GetCaptainsOnATeam?teamId=${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
