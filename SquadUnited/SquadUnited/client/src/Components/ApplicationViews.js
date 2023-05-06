@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Logins/Login";
 import Register from "./Logins/Register";
 import MyTeams from "./Teams/MyTeams";
+import TeamDetails from "./Teams/TeamDetails";
 
 export default function ApplicationViews({ isLoggedIn }) {
     return (
@@ -16,6 +17,9 @@ export default function ApplicationViews({ isLoggedIn }) {
                     />
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
+                    <Route path="team">
+                        <Route path=":id" element={<TeamDetails />} />
+                    </Route>
                 </Route>
             </Routes>
         </main>

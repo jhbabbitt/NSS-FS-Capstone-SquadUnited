@@ -9,6 +9,8 @@ namespace SquadUnited.Repositories
         User GetByFirebaseUserId(string firebaseUserId);
         User GetById(int id);
         List<User> GetUsers();
+        List<User> GetPlayersOnATeam(int teamId);
+        List<User> GetCaptainsOnATeam(int teamId);
         void Update(User userProfile);
     }
 }
