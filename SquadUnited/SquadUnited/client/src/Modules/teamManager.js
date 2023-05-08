@@ -24,3 +24,17 @@ export const getTeam = (id) => {
       },
     }).then((response) => response.json()))
 }
+
+export const updateTeam = (team) => {
+  return getToken().then((token) => {
+      return fetch(`${baseUrl}/${team.id}`, {
+          method: "PUT",
+          headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(team)
+      })
+      .then((res) => res)    
+  })
+}

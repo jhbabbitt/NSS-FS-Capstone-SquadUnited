@@ -50,5 +50,17 @@ namespace SquadUnited.Controllers
             }
             return Ok(team);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Team team)
+        {
+            if (id != team.Id)
+            {
+                return BadRequest();
+            }
+
+            _teamRepository.UpdateTeam(team);
+            return NoContent();
+        }
     }
 }

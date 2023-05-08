@@ -8,5 +8,6 @@ namespace SquadUnited.Repositories
         List<Team> GetAllActiveTeams();
         List<Team> GetTeamsByUserId(int Id);
         Team GetTeamById(int Id);
+        void UpdateTeam (Team team);
     }
 }

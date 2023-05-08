@@ -23,3 +23,25 @@ export const getCaptainsOnATeam = (id) => {
       },
     }).then((response) => response.json()))
 }
+
+export const getUser = (id) => {
+  return getToken().then((token) =>
+    fetch(`${baseUrl}/details/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((response) => response.json()))
+}
+
+export const RemovePlayerFromTeam = (teamId, userId) => {
+  return getToken().then((token) => {
+    return fetch(`${baseUrl}/team/${teamId}/player/${userId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+  })
+}

@@ -238,6 +238,20 @@ namespace SquadUnited.Repositories
             }
         }
 
+        public void DeleteUserTeam(int userId, int teamId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
 
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM UserTeam WHERE UserId = @UserId AND TeamId = @TeamId";
+                    DbUtils.AddParameter(cmd, "@UserId", userId);
+                    DbUtils.AddParameter(cmd, "@TeamId", teamId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
