@@ -66,7 +66,6 @@ namespace SquadUnited.Controllers
         [HttpGet("details/{id}")]
         public IActionResult GetUserById(int id)
         {
-            var currentUser = GetCurrentUser();
             var user = _userRepository.GetById(id);
             if (user == null)
             {
@@ -110,6 +109,13 @@ namespace SquadUnited.Controllers
             }
 
             return Ok(user);
+        }
+
+        [HttpDelete("team/{teamId}/player/{userId}")]
+        public IActionResult RemovefromTeam(int userId, int teamId)
+        {
+            _userRepository.DeleteUserTeam(userId, teamId);
+            return NoContent();
         }
         private User GetCurrentUser()
         {

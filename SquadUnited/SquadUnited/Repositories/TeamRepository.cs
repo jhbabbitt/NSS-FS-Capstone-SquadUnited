@@ -143,5 +143,27 @@ namespace SquadUnited.Repositories
                 }
             }
         }
+        public void UpdateTeam(Team team)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Team
+                            SET [Name] = @name,
+                            Details = @details
+                           WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@name", team.Name);
+                    cmd.Parameters.AddWithValue("@details", team.Details);
+                    cmd.Parameters.AddWithValue("@id", team.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

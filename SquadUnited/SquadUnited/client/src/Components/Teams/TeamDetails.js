@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getPlayersOnATeam, getCaptainsOnATeam } from "../../Modules/userManager";
 import { getTeam } from "../../Modules/teamManager"
 import { getCurrentUserRole } from "../../Modules/roleManager";
-import EditTeam from "./EditTeam";
+import CaptainView from "./CaptainView";
 
 
 const TeamDetails = () => {
@@ -21,13 +21,11 @@ const TeamDetails = () => {
         getCurrentUserRole(id).then(setUserRole);
     }, [id]);
 
-    console.log(team.name)
-    console.log(userRole.name)
-
     return (
         <div className="container">
             <h2>{team.name}</h2>
-            {userRole && userRole.id === 1 ? <EditTeam /> : null}
+            <h6>{team.details}</h6>
+            {userRole && userRole.id === 1 ? <CaptainView /> : null}
             <h5>Team Captain:</h5>
             <div className="row justify-content-center">
                 {captains.map((captain) => (
