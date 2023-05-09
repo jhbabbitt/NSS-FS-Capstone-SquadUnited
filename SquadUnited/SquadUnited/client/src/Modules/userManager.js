@@ -24,9 +24,21 @@ export const getCaptainsOnATeam = (id) => {
     }).then((response) => response.json()))
 }
 
+
+
 export const getUser = (id) => {
   return getToken().then((token) =>
     fetch(`${baseUrl}/details/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((response) => response.json()))
+}
+
+export const getAvailablePlayers = (id) => {
+  return getToken().then((token) =>
+    fetch(`${baseUrl}/GetAvailablePlayers?LeagueId=${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

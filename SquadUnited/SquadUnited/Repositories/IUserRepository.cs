@@ -13,5 +13,7 @@ namespace SquadUnited.Repositories
         List<User> GetCaptainsOnATeam(int teamId);
         void Update(User userProfile);
         void DeleteUserTeam (int userId, int teamId);
+        List<User> GetAvailablePlayers(int id);
+        void AddPlayerToTeam(UserTeam userTeam);
     }
 }

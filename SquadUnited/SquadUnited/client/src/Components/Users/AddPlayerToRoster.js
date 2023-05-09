@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Button, Card, CardTitle, Form, FormGroup, Input } from "reactstrap";
-import { getTeam } from "../../Modules/teamManager";
-import { RemovePlayerFromTeam, getUser } from "../../Modules/userManager";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { getCurrentUserRole } from "../../Modules/roleManager";
+import { Button, Card, CardTitle, Form, FormGroup, Input } from "reactstrap";
+import { AddPlayerToTeam } from "../../Modules/teamManager";
+import { getTeam } from "../../Modules/teamManager";
+import { getUser } from "../../Modules/userManager";
 
-export const RemovefromRoster = () => {
+const AddtoRoster = () => {
     const [team, setTeam] = useState();
     const [player, setPlayer] = useState({})
     const [userRole, setUserRole] = useState({});
@@ -22,26 +23,30 @@ export const RemovefromRoster = () => {
         return null;
     }
 
-    const handleDelete = (event) => {
+    const handleSave = (event) => {
         event.preventDefault();
-
-        RemovePlayerFromTeam(id, playerId).then((p) => {
-            navigate(`/team/${id}/ManageRoster`);
-        });
-    };
+    
+        const dataToSendToApi = {
+            userId: playerId,
+            teamId: id
+        }
+    
+        AddPlayerToTeam(dataToSendToApi)
+            .then(() => navigate(`/team/${id}/AddPlayers`))
+      }
 
     return (
         <div className="container">
             {userRole && userRole.id === 1 ? (
                 <>
                     <Card>
-                        <CardTitle>Are you sure you want to remove {player.name} from {team.name}?</CardTitle>
+                        <CardTitle>Are you sure you want to add {player.name} to {team.name}?</CardTitle>
                         <Form>
                             <FormGroup>
                                 <Input id="id" type="hidden" name="id" value={team.id} />
                             </FormGroup>
-                            <Button className="btn btn-primary" onClick={handleDelete}>
-                                REMOVE
+                            <Button className="btn btn-primary" onClick={handleSave}>
+                                Add
                             </Button>
                             <Button className="btn btn-danger" href="/">
                                 Cancel
@@ -53,5 +58,7 @@ export const RemovefromRoster = () => {
                 <p>Only the captain of this team can manage this roster.</p>
             )}
         </div>
-    );
-};
+    )
+}
+
+export default AddtoRoster

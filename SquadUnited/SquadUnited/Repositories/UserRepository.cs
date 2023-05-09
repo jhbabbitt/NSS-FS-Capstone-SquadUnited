@@ -185,6 +185,44 @@ namespace SquadUnited.Repositories
             }
         }
 
+        public List<User> GetAvailablePlayers(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT u.Id AS UserId, u.FirebaseUserId, u.Name, u.Email, u.IsActive AS ActiveProfile
+                                        FROM [User] u
+                                        WHERE NOT EXISTS (
+                                            SELECT *
+                                            FROM UserTeam ut
+                                            INNER JOIN Team t ON ut.TeamId = t.Id
+                                            INNER JOIN League l ON t.LeagueId = l.Id
+                                            WHERE ut.UserId = u.Id
+                                            AND t.LeagueId = @id
+                                        )";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var users = new List<User>();
+                        while (reader.Read())
+                        {
+                            users.Add(new User()
+                            {
+                                Id = DbUtils.GetInt(reader, "UserId"),
+                                FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
+                                Name = DbUtils.GetString(reader, "Name"),
+                                Email = DbUtils.GetString(reader, "Email"),
+                                IsActive = DbUtils.GetBool(reader, "ActiveProfile"),
+                            });
+                        }
+                        return users;
+                    }
+                }
+            }
+        }
+
         public void Add(User user)
         {
             using (var conn = Connection)
@@ -206,6 +244,24 @@ namespace SquadUnited.Repositories
                 }
             }
         }
+
+        public void AddPlayerToTeam(UserTeam userTeam)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO UserTeam (UserId, TeamId, RoleId)
+                                OUTPUT INSERTED.ID
+                                VALUES (@UserId, @TeamId, 2)";
+                    DbUtils.AddParameter(cmd, "@UserId", userTeam.UserId);
+                    DbUtils.AddParameter(cmd, "@TeamId", userTeam.TeamId);
+                    userTeam.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
 
         public void Update(User user)
         {

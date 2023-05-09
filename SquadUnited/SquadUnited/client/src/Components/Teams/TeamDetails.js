@@ -37,15 +37,19 @@ const TeamDetails = () => {
                 ))}
             </div>
             <h5>Current Players:</h5>
-            <div className="row justify-content-center">
-                {players.map((player) => (
-                    <div key={player.id}>
-                        <p>{player.name}</p>
-                        <p>{player.email}</p>
-                        <button>View Details</button>
-                    </div>
-                ))}
-            </div>
+            {players.length === 0 ? (
+                <p>There are currently no players on this roster.</p>
+            ) : (
+                <div className="row justify-content-center">
+                    {players.map((player) => (
+                        <div key={player.id}>
+                            <p>{player.name}</p>
+                            <p>{player.email}</p>
+                            <button>View Details</button>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
