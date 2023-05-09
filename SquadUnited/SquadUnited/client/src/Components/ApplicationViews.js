@@ -10,6 +10,7 @@ import ManageRoster from "./Users/ManageRoster";
 import { RemovefromRoster } from "./Users/RemoveFromRoster";
 import { AvailablePlayerList } from "./Users/AddPlayerList";
 import AddtoRoster from "./Users/AddPlayerToRoster";
+import { LeaguesIndex } from "./Leagues/LeaguesIndex";
 
 export default function ApplicationViews({ isLoggedIn }) {
     return (
@@ -29,6 +30,9 @@ export default function ApplicationViews({ isLoggedIn }) {
                         <Route path=":id/Remove/:playerId" element={<RemovefromRoster />} />
                         <Route path=":id/AddPlayers" element={<AvailablePlayerList />} />
                         <Route path=":id/AddToRoster/:playerId" element={<AddtoRoster />} />
+                    </Route>
+                    <Route path="Leagues">
+                        <Route path="index" element={<LeaguesIndex />} />
                     </Route>
                 </Route>
             </Routes>

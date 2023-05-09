@@ -13,21 +13,29 @@ namespace SquadUnited.Controllers
     {
         private readonly IRoleRepository _roleRepository;
         private readonly IUserRepository _userRepository;
-        private readonly ITeamRepository _teamRepository;
-
-        public RoleController(IRoleRepository rolerepository, ITeamRepository teamRepository, IUserRepository userRepository)
+        public RoleController(IRoleRepository rolerepository, IUserRepository userRepository)
         {
             _roleRepository = rolerepository;
-            _teamRepository = teamRepository;
             _userRepository = userRepository;
         }
 
         [HttpGet("CurrentUserRole")]
-        public IActionResult GetCurrentUserRole(string firebaseUserId, int teamId)
+        public ActionResult<Role> GetCurrentUserRole(string firebaseUserId, int teamId)
         {
             User user = _userRepository.GetByFirebaseUserId(firebaseUserId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             Role role = _roleRepository.GetUserTeamRole(user.Id, teamId);
+            if (role == null)
+            {
+                return NotFound();
+            }
+
             return Ok(role);
         }
+
     }
 }
