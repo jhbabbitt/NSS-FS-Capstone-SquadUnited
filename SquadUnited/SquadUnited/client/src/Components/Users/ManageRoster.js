@@ -51,7 +51,12 @@ const ManageRoster = () => {
                             ))}
                         </div>
                     )}
-                    <button>Add Players</button>
+                    <Link to={`/team/${id}/AddPlayers`}>
+                        <button>Add Players</button>
+                    </Link>
+                    <Link to={`/team/${id}`}>
+                        <button>Done</button>
+                    </Link>
                 </>
             ) : (
                 <p>Only the captain of this team can manage this roster.</p>

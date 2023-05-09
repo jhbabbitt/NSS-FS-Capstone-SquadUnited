@@ -32,6 +32,11 @@ export default function Header({ isLoggedIn, userProfile }) {
                                             My Teams
                                         </NavLink>
                                     </NavItem>
+                                    <NavItem>
+                                        <NavLink tag={RRNavLink} to="/Leagues/index">
+                                            Leagues
+                                        </NavLink>
+                                    </NavItem>
                                 </>
                             </>
                         )}

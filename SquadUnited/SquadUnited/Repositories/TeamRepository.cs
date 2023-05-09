@@ -152,18 +152,21 @@ namespace SquadUnited.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                            UPDATE Team
-                            SET [Name] = @name,
-                            Details = @details
-                           WHERE Id = @id";
+                UPDATE Team
+                SET [Name] = @name,
+                    Details = @details,
+                    [Public] = @isPublic
+                WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@name", team.Name);
                     cmd.Parameters.AddWithValue("@details", team.Details);
+                    cmd.Parameters.AddWithValue("@isPublic", team.Public);
                     cmd.Parameters.AddWithValue("@id", team.Id);
 
                     cmd.ExecuteNonQuery();
                 }
             }
         }
+
     }
 }

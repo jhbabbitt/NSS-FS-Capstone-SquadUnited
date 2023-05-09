@@ -38,3 +38,17 @@ export const updateTeam = (team) => {
       .then((res) => res)    
   })
 }
+
+export const AddPlayerToTeam = (userTeam) => {
+  return getToken().then((token) => {
+    fetch(`${baseUrl}/addPlayer`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(userTeam)
+    })
+      .then(response => response.json())
+  });
+}

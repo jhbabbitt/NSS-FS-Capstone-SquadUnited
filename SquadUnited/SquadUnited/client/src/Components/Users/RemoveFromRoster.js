@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Card, CardBody, CardTitle, Form, FormGroup, Input } from "reactstrap";
+import { Button, Card, CardTitle, Form, FormGroup, Input } from "reactstrap";
 import { getTeam } from "../../Modules/teamManager";
 import { RemovePlayerFromTeam, getUser } from "../../Modules/userManager";
 import { getCurrentUserRole } from "../../Modules/roleManager";
+import { me } from "../../Modules/authManager";
 
 export const RemovefromRoster = () => {
+    const [currentUser, setCurrentUser] = useState(null)
     const [team, setTeam] = useState();
     const [player, setPlayer] = useState({})
     const [userRole, setUserRole] = useState({});
@@ -13,16 +15,24 @@ export const RemovefromRoster = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        getTeam(id).then(setTeam);
-        getUser(playerId).then(setPlayer)
-        getCurrentUserRole(id).then(setUserRole);
-    }, []);
+        Promise.all([
+            me(),
+            getTeam(id),
+            getUser(playerId),
+            getCurrentUserRole(id)
+        ]).then(([user, teamData, playerData, roleData]) => {
+            setCurrentUser(user);
+            setTeam(teamData);
+            setPlayer(playerData);
+            setUserRole(roleData);
+        });
+    }, [id, playerId]);
 
     if (!team) {
         return null;
     }
 
-    const handleDelete = (event) => {
+    const handleDeleteAsCaptain = (event) => {
         event.preventDefault();
 
         RemovePlayerFromTeam(id, playerId).then((p) => {
@@ -30,17 +40,27 @@ export const RemovefromRoster = () => {
         });
     };
 
+    const handleDeleteAsPlayer = (event) => {
+        event.preventDefault();
+
+        RemovePlayerFromTeam(id, playerId).then((p) => {
+            navigate(`/team/${id}`);
+        });
+    };
+
     return (
-        <div className="container">
-            {userRole && userRole.id === 1 ? (
-                <>
+        <>
+            {userRole && userRole.id === 1 && (
+                <div className="container">
                     <Card>
-                        <CardTitle>Are you sure you want to remove {player.name} from {team.name}?</CardTitle>
+                        <CardTitle>
+                            Are you sure you want to remove {player.name} from {team.name}?
+                        </CardTitle>
                         <Form>
                             <FormGroup>
                                 <Input id="id" type="hidden" name="id" value={team.id} />
                             </FormGroup>
-                            <Button className="btn btn-primary" onClick={handleDelete}>
+                            <Button className="btn btn-primary" onClick={handleDeleteAsCaptain}>
                                 REMOVE
                             </Button>
                             <Button className="btn btn-danger" href="/">
@@ -48,10 +68,31 @@ export const RemovefromRoster = () => {
                             </Button>
                         </Form>
                     </Card>
-                </>
-            ) : (
-                <p>Only the captain of this team can manage this roster.</p>
+                </div>
             )}
-        </div>
+            {userRole && userRole.id === 2 && currentUser?.id === player.id && (
+                <div className="container">
+                    <Card>
+                        <CardTitle>
+                            Are you sure you want to leave {team.name}?
+                        </CardTitle>
+                        <Form>
+                            <FormGroup>
+                                <Input id="id" type="hidden" name="id" value={team.id} />
+                            </FormGroup>
+                            <Button className="btn btn-primary" onClick={handleDeleteAsPlayer}>
+                                LEAVE
+                            </Button>
+                            <Button className="btn btn-danger" href="/">
+                                Cancel
+                            </Button>
+                        </Form>
+                    </Card>
+                </div>
+            )}
+            {!userRole || currentUser?.id !== player.id ? (
+                <p>You are not authorized to manage this roster.</p>
+            ) : null}
+        </>
     );
-};
+}

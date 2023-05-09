@@ -63,6 +63,13 @@ namespace SquadUnited.Controllers
             return Ok(players);
         }
 
+        [HttpGet("GetAvailablePlayers")]
+        public IActionResult GetAvailablePlayers(int LeagueId)
+        {
+            List<User> players = _userRepository.GetAvailablePlayers(LeagueId);
+            return Ok(players);
+        }
+
         [HttpGet("details/{id}")]
         public IActionResult GetUserById(int id)
         {

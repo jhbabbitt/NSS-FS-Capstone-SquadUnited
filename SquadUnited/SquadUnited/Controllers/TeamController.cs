@@ -62,5 +62,19 @@ namespace SquadUnited.Controllers
             _teamRepository.UpdateTeam(team);
             return NoContent();
         }
+
+        [HttpPost("addPlayer")]
+        public IActionResult AddPlayerToTeam([FromBody] UserTeam userTeam)
+        {
+            try
+            {
+                _userRepository.AddPlayerToTeam(userTeam);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
     }
 }

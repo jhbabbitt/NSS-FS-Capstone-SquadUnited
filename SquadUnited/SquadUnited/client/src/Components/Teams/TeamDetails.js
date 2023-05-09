@@ -5,16 +5,19 @@ import { getPlayersOnATeam, getCaptainsOnATeam } from "../../Modules/userManager
 import { getTeam } from "../../Modules/teamManager"
 import { getCurrentUserRole } from "../../Modules/roleManager";
 import CaptainView from "./CaptainView";
+import { me } from "../../Modules/authManager";
 
 
 const TeamDetails = () => {
     const { id } = useParams();
+    const [currentUser, setCurrentUser] = useState(null)
     const [team, setTeam] = useState({});
     const [players, setPlayers] = useState([])
     const [captains, setCaptains] = useState([])
     const [userRole, setUserRole] = useState({});
 
     useEffect(() => {
+        me().then(setCurrentUser);
         getTeam(id).then(setTeam);
         getPlayersOnATeam(id).then(setPlayers);
         getCaptainsOnATeam(id).then(setCaptains);
@@ -37,15 +40,25 @@ const TeamDetails = () => {
                 ))}
             </div>
             <h5>Current Players:</h5>
-            <div className="row justify-content-center">
-                {players.map((player) => (
-                    <div key={player.id}>
-                        <p>{player.name}</p>
-                        <p>{player.email}</p>
-                        <button>View Details</button>
-                    </div>
-                ))}
-            </div>
+            {players.length === 0 ? (
+                <p>There are currently no players on this roster.</p>
+            ) : (
+                <div className="row justify-content-center">
+                    {players.map((player) => (
+                        <div key={player.id}>
+                            <p>{player.name}</p>
+                            <p>{player.email}</p>
+                            <button>View Details</button>
+                        </div>
+                    ))}
+                </div>
+            )}
+            <h5>Accessibility: {team.public ? 'Public' : 'Private'}</h5>
+            <h6>Private teams can still be viewed by other players, but only a captain can add players to the team.</h6>
+            {userRole && userRole.id === 2 ?
+                <Link to={`/team/${id}/Remove/${currentUser.id}`}>
+                    <button>Leave Team</button>
+                </Link> : null}
         </div>
     );
 }

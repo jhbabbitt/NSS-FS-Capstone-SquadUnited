@@ -33,6 +33,7 @@ namespace SquadUnited
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ITeamRepository, TeamRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
+            services.AddTransient<ILeagueRepository, LeagueRepository>();
 
             var firebaseProjectId = Configuration.GetValue<string>("FirebaseProjectId");
             var googleTokenUrl = $"https://securetoken.google.com/{firebaseProjectId}";
