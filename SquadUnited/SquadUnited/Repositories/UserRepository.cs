@@ -262,6 +262,62 @@ namespace SquadUnited.Repositories
             }
         }
 
+        public UserTeam AddCaptainToTeam(int userId, int teamId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO UserTeam (UserId, TeamId, RoleId)
+                        OUTPUT INSERTED.ID
+                        VALUES (@UserId, @TeamId, 1)";
+                    DbUtils.AddParameter(cmd, "@UserId", userId);
+                    DbUtils.AddParameter(cmd, "@TeamId", teamId);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            var userTeam = new UserTeam
+                            {
+                                Id = DbUtils.GetInt(reader, "ID"),
+                                UserId = userId,
+                                TeamId = teamId,
+                                RoleId = 1
+                            };
+
+                            return userTeam;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+
+
+        public bool IsUserInLeague(int userId, int leagueId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT COUNT(*) 
+            FROM userTeam AS ut 
+            JOIN team AS t ON ut.teamId = t.Id 
+            WHERE ut.userId = @userId 
+            AND t.leagueId = @leagueId
+            ";
+                    DbUtils.AddParameter(cmd, "@userId", userId);
+                    DbUtils.AddParameter(cmd, "@leagueId", leagueId);
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
 
         public void Update(User user)
         {

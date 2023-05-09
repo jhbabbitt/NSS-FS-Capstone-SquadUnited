@@ -19,7 +19,8 @@ export const LeaguesIndex = () => {
                 {leagues.map((league) => (
                     <div key={league.id}>
                         <p>{league.name}</p>
-                        <Link to={`/league/${league.id}`}>
+                        <p>{league.description}</p>
+                        <Link to={`/Leagues/${league.id}`}>
                             <button>View Details</button>
                         </Link>
                     </div>

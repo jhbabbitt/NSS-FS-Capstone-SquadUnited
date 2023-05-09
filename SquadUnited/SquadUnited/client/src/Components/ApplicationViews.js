@@ -11,6 +11,8 @@ import { RemovefromRoster } from "./Users/RemoveFromRoster";
 import { AvailablePlayerList } from "./Users/AddPlayerList";
 import AddtoRoster from "./Users/AddPlayerToRoster";
 import { LeaguesIndex } from "./Leagues/LeaguesIndex";
+import LeagueDetails from "./Leagues/LeagueDetails";
+import { CreateTeamForm } from "./Teams/CreateTeamForm";
 
 export default function ApplicationViews({ isLoggedIn }) {
     return (
@@ -33,6 +35,8 @@ export default function ApplicationViews({ isLoggedIn }) {
                     </Route>
                     <Route path="Leagues">
                         <Route path="index" element={<LeaguesIndex />} />
+                        <Route path=":id" element={<LeagueDetails />} />
+                        <Route path=":id/CreateTeam" element={<CreateTeamForm />} />
                     </Route>
                 </Route>
             </Routes>

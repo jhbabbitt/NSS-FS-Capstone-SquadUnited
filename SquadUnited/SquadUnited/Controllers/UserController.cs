@@ -106,6 +106,14 @@ namespace SquadUnited.Controllers
 
         }
 
+        [HttpGet("userLeague/{leagueId}/{userId}")]
+        public IActionResult IsUserInLeague(int leagueId, int userId)
+        {
+            bool isUserInLeague = _userRepository.IsUserInLeague(userId, leagueId);
+
+            return Ok(isUserInLeague);
+        }
+
         [HttpGet("Me")]
         public IActionResult Me()
         {

@@ -6,5 +6,6 @@ namespace SquadUnited.Repositories
     public interface ILeagueRepository
     {
         List<League> GetAllActiveLeagues();
+        League GetLeagueById(int id);
     }
 }
