@@ -14,20 +14,25 @@ const MyTeams = () => {
 
     return (
         <div className="container">
-            <h2>My Teams</h2>
-            <div className="row justify-content-center">
-                {teams.map((team) => (
-                    <div key={team.id}>
-                        <p>{team.name}</p>
-                        <p>{team.league.name}</p>
-                        <Link to={`/team/${team.id}`}>
-                            <button>View Details</button>
-                        </Link>
-                    </div>
-                ))}
-            </div>
+          <h2>My Teams</h2>
+          <div className="row justify-content-center">
+            {teams.length > 0 ? (
+              teams.map((team) => (
+                <div key={team.id}>
+                  <p>{team.name}</p>
+                  <p>{team.league.name}</p>
+                  <Link to={`/team/${team.id}`}>
+                    <button>View Details</button>
+                  </Link>
+                </div>
+              ))
+            ) : (
+              <p>You are currently not on any teams.</p>
+            )}
+          </div>
         </div>
-    );
+      );
+      
 
 };
 

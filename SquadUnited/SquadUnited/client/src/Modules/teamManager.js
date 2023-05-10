@@ -52,3 +52,28 @@ export const AddPlayerToTeam = (userTeam) => {
       .then(response => response.json())
   });
 }
+
+export const GetTeamsByLeague = (leagueId) => {
+  return getToken().then((token) =>
+    fetch(`${baseUrl}/GetTeamsByLeague/${leagueId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((response) => response.json()))
+}
+
+export const CreateTeam = (team) => {
+  const user = firebase.auth().currentUser
+  return getToken().then((token) => {
+    fetch(`${baseUrl}/createTeam?firebaseUserId=${user.uid}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(team)
+    })
+      .then(response => response.json())
+  });
+}

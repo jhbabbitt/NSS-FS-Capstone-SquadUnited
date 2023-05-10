@@ -93,10 +93,10 @@ namespace SquadUnited.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Edit(int id, User user)
+        public IActionResult Edit(User user)
         {
             var currentUser = GetCurrentUser();
-            if (id != user.Id)
+            if (currentUser.Id != user.Id)
             {
                 return BadRequest();
             }
@@ -104,6 +104,14 @@ namespace SquadUnited.Controllers
             _userRepository.Update(user);
             return NoContent();
 
+        }
+
+        [HttpGet("userLeague/{leagueId}/{userId}")]
+        public IActionResult IsUserInLeague(int leagueId, int userId)
+        {
+            bool isUserInLeague = _userRepository.IsUserInLeague(userId, leagueId);
+
+            return Ok(isUserInLeague);
         }
 
         [HttpGet("Me")]

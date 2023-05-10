@@ -12,14 +12,15 @@ export const LeaguesIndex = () => {
         getLeagues();
     }, []);
 
-    return(
+    return (
         <div className="container">
             <h2>All Leagues</h2>
             <div className="row justify-content-center">
                 {leagues.map((league) => (
                     <div key={league.id}>
                         <p>{league.name}</p>
-                        <Link to={`/league/${league.id}`}>
+                        <p>{league.description}</p>
+                        <Link to={`/Leagues/${league.id}`}>
                             <button>View Details</button>
                         </Link>
                     </div>

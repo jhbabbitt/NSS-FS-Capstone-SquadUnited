@@ -57,3 +57,27 @@ export const RemovePlayerFromTeam = (teamId, userId) => {
     })
   })
 }
+
+export const IsUserInLeague = (leagueId, userId) => {
+  return getToken().then((token) =>
+  fetch(`${baseUrl}/userLeague/${leagueId}/${userId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((response) => response.json()))
+}
+
+export const updateUser = (user) => {
+  return getToken().then((token) => {
+      return fetch(`${baseUrl}/${user.id}`, {
+          method: "PUT",
+          headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user)
+      })
+      .then((res) => res)    
+  })
+}

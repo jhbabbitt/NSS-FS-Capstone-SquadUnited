@@ -4,10 +4,10 @@ import firebase from "firebase/app"
 
 const baseUrl = "/api/role"
 
-export const getCurrentUserRole = (id) => {
+export const getCurrentUserRole = (teamId) => {
   const user = firebase.auth().currentUser;
   return getToken().then((token) =>
-    fetch(`${baseUrl}/CurrentUserRole?firebaseUserId=${user.uid}&teamId=${id}`, {
+    fetch(`${baseUrl}/CurrentUserRole?firebaseUserId=${user.uid}&teamId=${teamId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -15,11 +15,12 @@ export const getCurrentUserRole = (id) => {
     })
       .then((response) => {
         if (response.status === 404) {
+          throw new Error("User role not found");
+        } else if (response.status === 204) {
           return null;
-        } else if (!response.ok) {
-          throw new Error("Error fetching user role");
+        } else {
+          return response.json();
         }
-        return response.json();
       })
       .catch((error) => {
         console.log(error);
@@ -27,3 +28,5 @@ export const getCurrentUserRole = (id) => {
       })
   );
 };
+
+

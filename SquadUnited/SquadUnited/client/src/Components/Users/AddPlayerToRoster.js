@@ -5,60 +5,124 @@ import { Button, Card, CardTitle, Form, FormGroup, Input } from "reactstrap";
 import { AddPlayerToTeam } from "../../Modules/teamManager";
 import { getTeam } from "../../Modules/teamManager";
 import { getUser } from "../../Modules/userManager";
+import { me } from "../../Modules/authManager";
+import { IsUserInLeague } from "../../Modules/userManager";
 
 const AddtoRoster = () => {
     const [team, setTeam] = useState();
     const [player, setPlayer] = useState({})
     const [userRole, setUserRole] = useState({});
+    const [currentUser, setCurrentUser] = useState(null)
+    const [isPlayerInLeague, setIsPlayerInLeague] = useState(false);
     const { id, playerId } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
-        getTeam(id).then(setTeam);
-        getUser(playerId).then(setPlayer)
-        getCurrentUserRole(id).then(setUserRole);
-    }, []);
+        const promises = [me(), getTeam(id), getUser(playerId), getCurrentUserRole(id)];
+
+        Promise.all(promises)
+            .then(([meData, teamData, playerData, userRoleData]) => {
+                setCurrentUser(meData);
+                setTeam(teamData);
+                setPlayer(playerData);
+                setUserRole(userRoleData);
+
+                if (teamData) {
+                    IsUserInLeague(teamData.leagueId, meData.id)
+                        .then((isPlayerInLeagueData) => {
+                            setIsPlayerInLeague(isPlayerInLeagueData);
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        });
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, [id]);
 
     if (!team) {
         return null;
     }
 
-    const handleSave = (event) => {
+    const handleSubmitAsCaptain = (event) => {
         event.preventDefault();
-    
+
         const dataToSendToApi = {
             userId: playerId,
             teamId: id
         }
-    
+
         AddPlayerToTeam(dataToSendToApi)
             .then(() => navigate(`/team/${id}/AddPlayers`))
-      }
+    }
+
+    const handleSubmitAsPlayer = (event) => {
+        event.preventDefault();
+
+        const dataToSendToApi = {
+            userId: playerId,
+            teamId: id
+        }
+
+        AddPlayerToTeam(dataToSendToApi)
+            .then(() => navigate(`/team/${id}`))
+    }
 
     return (
-        <div className="container">
-            {userRole && userRole.id === 1 ? (
-                <>
+        <>
+            {userRole && userRole.id === 1 && (
+                <div className="container">
                     <Card>
-                        <CardTitle>Are you sure you want to add {player.name} to {team.name}?</CardTitle>
+                        <CardTitle>
+                            Are you sure you want to add {player.name} from {team.name}?
+                        </CardTitle>
                         <Form>
                             <FormGroup>
                                 <Input id="id" type="hidden" name="id" value={team.id} />
                             </FormGroup>
-                            <Button className="btn btn-primary" onClick={handleSave}>
-                                Add
+                            <Button className="btn btn-primary" onClick={handleSubmitAsCaptain}>
+                                ADD
                             </Button>
                             <Button className="btn btn-danger" href="/">
                                 Cancel
                             </Button>
                         </Form>
                     </Card>
-                </>
-            ) : (
-                <p>Only the captain of this team can manage this roster.</p>
+                </div>
             )}
-        </div>
-    )
+            {!isPlayerInLeague && team.public && currentUser?.id === player.id && (
+                <div className="container">
+                    <Card>
+                        <CardTitle>
+                            Are you sure you want to join {team.name}? You may leave at any time.
+                        </CardTitle>
+                        <Form>
+                            <FormGroup>
+                                <Input id="id" type="hidden" name="id" value={team.id} />
+                            </FormGroup>
+                            <Button className="btn btn-primary" onClick={handleSubmitAsPlayer}>
+                                JOIN
+                            </Button>
+                            <Button className="btn btn-danger" href="/">
+                                Cancel
+                            </Button>
+                        </Form>
+                    </Card>
+                </div>
+            )}
+            {userRole && userRole.id === 2 && (
+                <p>You are already on this team.</p>
+            )}
+            {isPlayerInLeague && (
+                <p>You are already on a team in this league.</p>
+            )}
+            {currentUser?.id !== player.id ? (
+                <p>You are not authorized to manage this roster.</p>
+            ) : null}
+        </>
+    );
 }
 
 export default AddtoRoster

@@ -26,5 +26,16 @@ namespace SquadUnited.Controllers
         {
             return Ok(_leagueRepository.GetAllActiveLeagues());
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var league = _leagueRepository.GetLeagueById(id);
+            if (league == null)
+            {
+                return NotFound();
+            }
+            return Ok(league);
+        }
     }
 }

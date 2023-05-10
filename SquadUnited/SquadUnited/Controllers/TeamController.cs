@@ -76,5 +76,33 @@ namespace SquadUnited.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpGet("GetTeamsByLeague/{leagueId}")]
+        public IActionResult GetByLeagueId(int leagueId)
+        {
+            List<Team> teams = _teamRepository.GetAllTeamsByLeague(leagueId);
+            if (teams == null)
+            {
+                return NotFound();
+            }
+            return Ok(teams);
+        }
+
+        [HttpPost("createTeam")]
+        public IActionResult CreateTeam([FromBody] Team team, string firebaseUserId)
+        {
+            try
+            {
+                User user = _userRepository.GetByFirebaseUserId(firebaseUserId);
+                int teamId = _teamRepository.CreateTeam(team);
+                UserTeam userTeam = _userRepository.AddCaptainToTeam(user.Id, teamId);
+
+                return Ok(userTeam);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
     }
 }

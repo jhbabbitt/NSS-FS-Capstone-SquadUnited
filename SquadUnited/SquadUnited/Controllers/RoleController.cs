@@ -31,11 +31,10 @@ namespace SquadUnited.Controllers
             Role role = _roleRepository.GetUserTeamRole(user.Id, teamId);
             if (role == null)
             {
-                return NotFound();
+                return Ok(null);
             }
 
             return Ok(role);
         }
-
     }
 }

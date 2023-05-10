@@ -6,23 +6,45 @@ import { getTeam } from "../../Modules/teamManager"
 import { getCurrentUserRole } from "../../Modules/roleManager";
 import CaptainView from "./CaptainView";
 import { me } from "../../Modules/authManager";
+import { IsUserInLeague } from "../../Modules/userManager";
 
 
 const TeamDetails = () => {
     const { id } = useParams();
     const [currentUser, setCurrentUser] = useState(null)
     const [team, setTeam] = useState({});
-    const [players, setPlayers] = useState([])
-    const [captains, setCaptains] = useState([])
+    const [players, setPlayers] = useState([]);
+    const [captains, setCaptains] = useState([]);
     const [userRole, setUserRole] = useState({});
+    const [isPlayerInLeague, setIsPlayerInLeague] = useState(false);
 
     useEffect(() => {
-        me().then(setCurrentUser);
-        getTeam(id).then(setTeam);
-        getPlayersOnATeam(id).then(setPlayers);
-        getCaptainsOnATeam(id).then(setCaptains);
-        getCurrentUserRole(id).then(setUserRole);
+        const promises = [me(), getTeam(id), getPlayersOnATeam(id), getCaptainsOnATeam(id), getCurrentUserRole(id)];
+
+        Promise.all(promises)
+            .then(([meData, teamData, playersData, captainsData, userRoleData]) => {
+                setCurrentUser(meData);
+                setTeam(teamData);
+                setPlayers(playersData);
+                setCaptains(captainsData);
+                setUserRole(userRoleData);
+
+                if (teamData) {
+                    IsUserInLeague(teamData.leagueId, meData.id)
+                        .then((isPlayerInLeagueData) => {
+                            setIsPlayerInLeague(isPlayerInLeagueData);
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        });
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }, [id]);
+
+
 
     return (
         <div className="container">
@@ -55,10 +77,16 @@ const TeamDetails = () => {
             )}
             <h5>Accessibility: {team.public ? 'Public' : 'Private'}</h5>
             <h6>Private teams can still be viewed by other players, but only a captain can add players to the team.</h6>
+
             {userRole && userRole.id === 2 ?
                 <Link to={`/team/${id}/Remove/${currentUser.id}`}>
                     <button>Leave Team</button>
                 </Link> : null}
+            {!isPlayerInLeague && team.public ? (
+                <Link to={`/team/${id}/AddToRoster/${currentUser.id}`}>
+                    <button>Join Team</button>
+                </Link>
+            ) : null}
         </div>
     );
 }
