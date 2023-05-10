@@ -245,6 +245,7 @@ namespace SquadUnited.Repositories
             }
         }
 
+
         public void AddPlayerToTeam(UserTeam userTeam)
         {
             using (var conn = Connection)
@@ -330,7 +331,7 @@ namespace SquadUnited.Repositories
                                         SET
                                             Name = @Name,
                                             Email = @email,
-                                            Active = @IsActive
+                                            IsActive = @IsActive
                                         WHERE Id = @id";
                     DbUtils.AddParameter(cmd, "@Name", user.Name);
                     DbUtils.AddParameter(cmd, "@email", user.Email);

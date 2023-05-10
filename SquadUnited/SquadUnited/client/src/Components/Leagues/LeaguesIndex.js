@@ -12,7 +12,7 @@ export const LeaguesIndex = () => {
         getLeagues();
     }, []);
 
-    return(
+    return (
         <div className="container">
             <h2>All Leagues</h2>
             <div className="row justify-content-center">

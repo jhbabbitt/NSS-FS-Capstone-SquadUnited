@@ -26,18 +26,21 @@ export default function Header({ isLoggedIn, userProfile }) {
                     <Nav className="mr-auto" navbar>
                         {isLoggedIn && (
                             <>
-                                <>
-                                    <NavItem>
-                                        <NavLink tag={RRNavLink} to="/">
-                                            My Teams
-                                        </NavLink>
-                                    </NavItem>
-                                    <NavItem>
-                                        <NavLink tag={RRNavLink} to="/Leagues/index">
-                                            Leagues
-                                        </NavLink>
-                                    </NavItem>
-                                </>
+                                <NavItem>
+                                    <NavLink tag={RRNavLink} to="/">
+                                        My Teams
+                                    </NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink tag={RRNavLink} to="/Leagues/index">
+                                        Leagues
+                                    </NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink tag={RRNavLink} to="/profile">
+                                        My Profile
+                                    </NavLink>
+                                </NavItem>
                             </>
                         )}
                     </Nav>

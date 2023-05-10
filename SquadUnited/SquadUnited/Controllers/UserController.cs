@@ -93,10 +93,10 @@ namespace SquadUnited.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Edit(int id, User user)
+        public IActionResult Edit(User user)
         {
             var currentUser = GetCurrentUser();
-            if (id != user.Id)
+            if (currentUser.Id != user.Id)
             {
                 return BadRequest();
             }

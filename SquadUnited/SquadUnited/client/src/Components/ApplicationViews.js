@@ -13,6 +13,9 @@ import AddtoRoster from "./Users/AddPlayerToRoster";
 import { LeaguesIndex } from "./Leagues/LeaguesIndex";
 import LeagueDetails from "./Leagues/LeagueDetails";
 import { CreateTeamForm } from "./Teams/CreateTeamForm";
+import { PlayerDetails } from "./Users/PlayerDetails";
+import { MyProfile } from "./Users/MyProfile";
+import { EditProfile } from "./Users/EditProfile";
 
 export default function ApplicationViews({ isLoggedIn }) {
     return (
@@ -25,6 +28,8 @@ export default function ApplicationViews({ isLoggedIn }) {
                     />
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
+                    <Route path="/profile" element={<MyProfile />} />
+                    <Route path="/profile/edit" element={<EditProfile />} />
                     <Route path="team">
                         <Route path=":id" element={<TeamDetails />} />
                         <Route path=":id/EditTeam" element={<EditTeamForm />} />
@@ -37,6 +42,9 @@ export default function ApplicationViews({ isLoggedIn }) {
                         <Route path="index" element={<LeaguesIndex />} />
                         <Route path=":id" element={<LeagueDetails />} />
                         <Route path=":id/CreateTeam" element={<CreateTeamForm />} />
+                    </Route>
+                    <Route path="Player">
+                        <Route path=":id" element={<PlayerDetails />} />
                     </Route>
                 </Route>
             </Routes>
