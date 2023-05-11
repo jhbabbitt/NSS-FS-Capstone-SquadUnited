@@ -4,6 +4,8 @@ import { getCurrentUserRole } from "../../Modules/roleManager";
 import { getTeam } from "../../Modules/teamManager"
 import { getPlayersOnATeam, getCaptainsOnATeam } from "../../Modules/userManager";
 import { Link } from "react-router-dom";
+import { Table, Button } from 'reactstrap';
+import "./ManageRoster.css";
 
 const ManageRoster = () => {
     const { id } = useParams();
@@ -23,46 +25,71 @@ const ManageRoster = () => {
         <div className="container">
             {userRole && userRole.id === 1 ? (
                 <>
-                    <h2>{team.name}</h2>
-                    <h6>{team.details}</h6>
+                    <h2 className="team-name">{team.name}</h2>
+                    <h6 className="team-details">{team.details}</h6>
                     <h5>Team Captain:</h5>
-                    <div className="row justify-content-center">
-                        {captains.map((captain) => (
-                            <div key={captain.id}>
-                                <p>{captain.name}</p>
-                                <p>{captain.email}</p>
-                                <button>Captains cannot be removed from a roster</button>
-                            </div>
-                        ))}
-                    </div>
+                    <Table className="team-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {captains.map((captain) => (
+                                <tr key={captain.id}>
+                                    <td>{captain.name}</td>
+                                    <td>{captain.email}</td>
+                                    <td>Captains cannot be removed from roster</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
                     <h5>Current Players:</h5>
                     {players.length === 0 ? (
                         <p>There are currently no players on this roster.</p>
                     ) : (
-                        <div className="row justify-content-center">
-                            {players.map((player) => (
-                                <div key={player.id}>
-                                    <p>{player.name}</p>
-                                    <p>{player.email}</p>
-                                    <Link to={`/team/${id}/Remove/${player.id}`}>
-                                        <button>Remove from Roster</button>
-                                    </Link>
-                                </div>
-                            ))}
-                        </div>
+                        <Table className="team-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {players.map((player) => (
+                                    <tr key={player.id}>
+                                        <td>{player.name}</td>
+                                        <td>{player.email}</td>
+                                        <td>
+                                            <Link to={`/team/${id}/Remove/${player.id}`}>
+                                                <Button className="btn btn-primary">Remove from Roster</Button>
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
                     )}
-                    <Link to={`/team/${id}/AddPlayers`}>
-                        <button>Add Players</button>
-                    </Link>
-                    <Link to={`/team/${id}`}>
-                        <button>Done</button>
-                    </Link>
+                    <div className="button-container">
+                        <Link to={`/team/${id}/AddPlayers`}>
+                            <button className="btn btn-primary">Add Players</button>
+                        </Link>
+                    </div>
+                    <div className="button-container">
+                        <Link to={`/team/${id}`}>
+                            <button className="btn btn-primary">Done</button>
+                        </Link>
+                    </div>
                 </>
             ) : (
                 <p>Only the captain of this team can manage this roster.</p>
             )}
         </div>
     );
+
 }
 
 export default ManageRoster

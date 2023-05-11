@@ -4,6 +4,8 @@ import { getTeam } from "../../Modules/teamManager"
 import { Link } from "react-router-dom";
 import { getCurrentUserRole } from "../../Modules/roleManager";
 import { getAvailablePlayers } from "../../Modules/userManager";
+import { Table, Button } from 'reactstrap';
+import "./HorizButtons.css";
 
 export const AvailablePlayerList = () => {
     const [team, setTeam] = useState();
@@ -21,6 +23,7 @@ export const AvailablePlayerList = () => {
             getAvailablePlayers(team.leagueId).then((data) => setPlayers(data));
         }
     }, [team]);
+
     return (
         <div className="container">
             {userRole && userRole.id === 1 ? (
@@ -30,20 +33,31 @@ export const AvailablePlayerList = () => {
                     {players.length === 0 ? (
                         <p>There are currently no players available for this league.</p>
                     ) : (
-                        <div className="row justify-content-center">
-                            {players.map((player) => (
-                                <div key={player.id}>
-                                    <p>{player.name}</p>
-                                    <p>{player.email}</p>
-                                    <Link to={`/team/${id}/AddToRoster/${player.id}`}>
-                                        <button>Add to Roster</button>
-                                    </Link>
-                                </div>
-                            ))}
-                        </div>
+                        <Table className="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {players.map((player) => (
+                                    <tr key={player.id}>
+                                        <td>{player.name}</td>
+                                        <td>{player.email}</td>
+                                        <td>
+                                            <Link to={`/team/${id}/AddToRoster/${player.id}`}>
+                                                <Button color="primary">Add to Roster</Button>
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
                     )}
                     <Link to={`/team/${id}`}>
-                        <button>Done</button>
+                        <Button color="primary">Done</Button>
                     </Link>
                 </>
             ) : (
