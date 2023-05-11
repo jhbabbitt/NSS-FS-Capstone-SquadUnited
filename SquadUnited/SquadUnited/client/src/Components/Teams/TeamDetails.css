@@ -1,0 +1,23 @@
+.team-table {
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.team-table td {
+    padding: 5px;
+}
+
+.team-buttons {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.team-details {
+    margin-bottom: 25px;
+}
+
+.captain-view-container {
+    margin-top: 40px;
+    margin-bottom: 50px;
+  }
+  

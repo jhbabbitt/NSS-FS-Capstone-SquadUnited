@@ -5,6 +5,7 @@ import { getTeam } from "../../Modules/teamManager";
 import { RemovePlayerFromTeam, getUser } from "../../Modules/userManager";
 import { getCurrentUserRole } from "../../Modules/roleManager";
 import { me } from "../../Modules/authManager";
+import "./HorizButtons.css";
 
 export const RemovefromRoster = () => {
     const [currentUser, setCurrentUser] = useState(null)
@@ -60,10 +61,11 @@ export const RemovefromRoster = () => {
                             <FormGroup>
                                 <Input id="id" type="hidden" name="id" value={team.id} />
                             </FormGroup>
-                            <Button className="btn btn-primary" onClick={handleDeleteAsCaptain}>
+                            <Button color="primary" className="btn btn-primary" onClick={handleDeleteAsCaptain}>
                                 REMOVE
                             </Button>
-                            <Button className="btn btn-danger" href="/">
+                            <span className="button-space" />
+                            <Button color="danger" className="btn btn-danger" href="/">
                                 Cancel
                             </Button>
                         </Form>
@@ -80,19 +82,20 @@ export const RemovefromRoster = () => {
                             <FormGroup>
                                 <Input id="id" type="hidden" name="id" value={team.id} />
                             </FormGroup>
-                            <Button className="btn btn-primary" onClick={handleDeleteAsPlayer}>
+                            <Button color="primary" className="btn btn-primary" onClick={handleDeleteAsPlayer}>
                                 LEAVE
                             </Button>
-                            <Button className="btn btn-danger" href="/">
+                            <span className="button-space" />
+                            <Button color="danger" className="btn btn-danger" href="/">
                                 Cancel
                             </Button>
                         </Form>
                     </Card>
                 </div>
             )}
-            {!userRole || currentUser?.id !== player.id ? (
+            {(!userRole || (userRole.id === 2 && currentUser?.id !== player.id)) && (
                 <p>You are not authorized to manage this roster.</p>
-            ) : null}
+            )}
         </>
     );
 }

@@ -1,19 +1,27 @@
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { Button, Container, Col, Row } from "reactstrap";
 
-const CaptainView = () => { 
-    const { id } = useParams();
-    return (
-        <div>
-            <h2>You are the captain.</h2>
-            <Link to={`/team/${id}/EditTeam`}>
-                <button>Edit Team</button>
-            </Link>
-            <Link to={`/team/${id}/ManageRoster`}>
-                <button>Manage Roster</button>
-            </Link>
-        </div>
-    )
-}
+const CaptainView = () => {
+  const { id } = useParams();
+
+  return (
+    <Container className="captain-view-container">
+      <h4>You are the captain.</h4>
+      <Row>
+        <Col>
+          <Link to={`/team/${id}/EditTeam`}>
+            <Button color="primary">Edit Team</Button>
+          </Link>
+        </Col>
+        <Col>
+          <Link to={`/team/${id}/ManageRoster`}>
+            <Button color="primary">Manage Roster</Button>
+          </Link>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 export default CaptainView;

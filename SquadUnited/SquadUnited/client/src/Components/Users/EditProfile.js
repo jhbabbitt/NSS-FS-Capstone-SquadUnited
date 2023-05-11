@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateUser } from "../../Modules/userManager";
 import { FormGroup, Input, Card, CardBody, Form, CardTitle, Button, Label } from "reactstrap"
+import "./HorizButtons.css";
 
 export const EditProfile = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -33,7 +34,7 @@ export const EditProfile = () => {
   return (
     <div className="container">
       <Card>
-        <CardTitle>Edit Profile</CardTitle>
+        <CardTitle>Edit your Profile</CardTitle>
         <CardBody>
           <Form>
             <FormGroup>
@@ -43,9 +44,10 @@ export const EditProfile = () => {
               <Label for="name">Full Name</Label>
               <Input type="text" id="name" value={currentUser.name} onChange={handleChange} />
             </FormGroup>
-            <Button className="btn btn-primary" onClick={handleSave}>
+            <Button color="primary" className="btn btn-primary" onClick={handleSave}>
               Submit
             </Button>
+            <span className="button-space" />
             <Button className="btn btn-danger" href="/profile">
               Cancel
             </Button>

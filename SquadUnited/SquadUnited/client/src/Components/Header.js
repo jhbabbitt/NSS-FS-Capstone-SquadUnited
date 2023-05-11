@@ -10,6 +10,7 @@ import {
     NavLink,
 } from "reactstrap";
 import { logout } from "../Modules/authManager";
+import "./Header.css";
 
 export default function Header({ isLoggedIn, userProfile }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +20,7 @@ export default function Header({ isLoggedIn, userProfile }) {
         <div>
             <Navbar color="light" light expand="md">
                 <NavbarBrand tag={RRNavLink} to="/">
-                    SquadUnited
+                    Squad United
                 </NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>

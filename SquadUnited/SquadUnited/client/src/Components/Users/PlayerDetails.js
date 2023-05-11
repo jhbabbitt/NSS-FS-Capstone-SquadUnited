@@ -1,15 +1,35 @@
 import { useParams } from "react-router-dom";
 import { getUser } from "../../Modules/userManager";
+import { useState, useEffect } from "react";
 
 export const PlayerDetails = () => {
-    const { id } = useParams();
-    const user = getUser(id);
+  const { id } = useParams();
+  const [user, setUser] = useState(null);
 
-    return (
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const fetchedUser = await getUser(id);
+        setUser(fetchedUser);
+      } catch (error) {
+      }
+    };
+
+    fetchUser();
+  }, [id]);
+
+  return (
+    <div className="container">
+      <h2>Player Details</h2>
+      {user ? (
         <div>
-            <h2>Player Details</h2>
-            <p>Name: {user.name}</p>
-            <p>Email: {user.email}</p>
+          <p>Name: {user.name}</p>
+          <p>Email: {user.email}</p>
         </div>
-    )
-}
+      ) : (
+        <p>Loading player details...</p>
+      )}
+    </div>
+  );
+  
+};

@@ -7,6 +7,7 @@ import { getTeam } from "../../Modules/teamManager";
 import { getUser } from "../../Modules/userManager";
 import { me } from "../../Modules/authManager";
 import { IsUserInLeague } from "../../Modules/userManager";
+import "./HorizButtons.css";
 
 const AddtoRoster = () => {
     const [team, setTeam] = useState();
@@ -76,18 +77,20 @@ const AddtoRoster = () => {
                 <div className="container">
                     <Card>
                         <CardTitle>
-                            Are you sure you want to add {player.name} from {team.name}?
+                            Are you sure you want to add {player.name} to {team.name}?
                         </CardTitle>
                         <Form>
                             <FormGroup>
                                 <Input id="id" type="hidden" name="id" value={team.id} />
                             </FormGroup>
-                            <Button className="btn btn-primary" onClick={handleSubmitAsCaptain}>
+                            <Button color="primary" className="btn btn-primary" onClick={handleSubmitAsCaptain}>
                                 ADD
                             </Button>
-                            <Button className="btn btn-danger" href="/">
+                            <span className="button-space" />
+                            <Button color="danger" className="btn btn-danger" href="/">
                                 Cancel
                             </Button>
+
                         </Form>
                     </Card>
                 </div>
@@ -102,10 +105,11 @@ const AddtoRoster = () => {
                             <FormGroup>
                                 <Input id="id" type="hidden" name="id" value={team.id} />
                             </FormGroup>
-                            <Button className="btn btn-primary" onClick={handleSubmitAsPlayer}>
+                            <Button color="primary" className="btn btn-primary" onClick={handleSubmitAsPlayer}>
                                 JOIN
                             </Button>
-                            <Button className="btn btn-danger" href="/">
+                            <span className="button-space" />
+                            <Button color="danger" className="btn btn-danger" href="/">
                                 Cancel
                             </Button>
                         </Form>
@@ -115,10 +119,10 @@ const AddtoRoster = () => {
             {userRole && userRole.id === 2 && (
                 <p>You are already on this team.</p>
             )}
-            {isPlayerInLeague && (
+            {isPlayerInLeague && userRole.id === 2 && (
                 <p>You are already on a team in this league.</p>
             )}
-            {currentUser?.id !== player.id ? (
+            {!userRole && currentUser?.id !== player.id ? (
                 <p>You are not authorized to manage this roster.</p>
             ) : null}
         </>

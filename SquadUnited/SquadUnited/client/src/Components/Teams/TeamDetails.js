@@ -7,6 +7,8 @@ import { getCurrentUserRole } from "../../Modules/roleManager";
 import CaptainView from "./CaptainView";
 import { me } from "../../Modules/authManager";
 import { IsUserInLeague } from "../../Modules/userManager";
+import { Table, Button } from "reactstrap";
+import "./TeamDetails.css";
 
 
 const TeamDetails = () => {
@@ -48,47 +50,75 @@ const TeamDetails = () => {
 
     return (
         <div className="container">
-            <h2>{team.name}</h2>
-            <h6>{team.details}</h6>
+            <h1 className="team-name">{team.name}</h1>
+            <h6 className="team-details">{team.details}</h6>
             {userRole && userRole.id === 1 ? <CaptainView /> : null}
             <h5>Team Captain:</h5>
-            <div className="row justify-content-center">
-                {captains.map((captain) => (
-                    <div key={captain.id}>
-                        <p>{captain.name}</p>
-                        <p>{captain.email}</p>
-                        <button>View Details</button>
-                    </div>
-                ))}
-            </div>
+            <Table className="team-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {captains.map((captain) => (
+                        <tr key={captain.id}>
+                            <td>{captain.name}</td>
+                            <td>{captain.email}</td>
+                            <td>
+                                <Link to={`/player/${captain.id}`}>
+                                    <Button color="primary">View Details</Button>
+                                </Link>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
             <h5>Current Players:</h5>
             {players.length === 0 ? (
                 <p>There are currently no players on this roster.</p>
             ) : (
-                <div className="row justify-content-center">
-                    {players.map((player) => (
-                        <div key={player.id}>
-                            <p>{player.name}</p>
-                            <p>{player.email}</p>
-                            <button>View Details</button>
-                        </div>
-                    ))}
-                </div>
+                <Table className="team-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {players.map((player) => (
+                            <tr key={player.id}>
+                                <td>{player.name}</td>
+                                <td>{player.email}</td>
+                                <td>
+                                    <Link to={`/player/${player.id}`}>
+                                        <Button color="primary">View Details</Button>
+                                    </Link>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
             )}
             <h5>Accessibility: {team.public ? 'Public' : 'Private'}</h5>
             <h6>Private teams can still be viewed by other players, but only a captain can add players to the team.</h6>
 
-            {userRole && userRole.id === 2 ?
+            {userRole && userRole.id === 2 ? (
                 <Link to={`/team/${id}/Remove/${currentUser.id}`}>
-                    <button>Leave Team</button>
-                </Link> : null}
+                    <Button color="primary">Leave Team</Button>
+                </Link>
+            ) : null}
             {!isPlayerInLeague && team.public ? (
                 <Link to={`/team/${id}/AddToRoster/${currentUser.id}`}>
-                    <button>Join Team</button>
+                    <Button color="primary">Join Team</Button>
                 </Link>
             ) : null}
         </div>
     );
+
 }
 
 export default TeamDetails
