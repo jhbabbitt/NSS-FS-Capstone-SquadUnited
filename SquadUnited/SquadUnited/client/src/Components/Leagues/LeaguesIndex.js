@@ -1,31 +1,45 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Table } from "reactstrap";
 import { getActiveLeagues } from "../../Modules/leagueManager";
 
 export const LeaguesIndex = () => {
-    const [leagues, setLeagues] = useState([]);
-    const getLeagues = () => {
-        getActiveLeagues().then(leagues => setLeagues(leagues));
-    };
+  const [leagues, setLeagues] = useState([]);
+  
+  const fetchLeagues = async () => {
+    const activeLeagues = await getActiveLeagues();
+    setLeagues(activeLeagues);
+  };
 
-    useEffect(() => {
-        getLeagues();
-    }, []);
+  useEffect(() => {
+    fetchLeagues();
+  }, []);
 
-    return (
-        <div className="container">
-            <h2>All Leagues</h2>
-            <div className="row justify-content-center">
-                {leagues.map((league) => (
-                    <div key={league.id}>
-                        <p>{league.name}</p>
-                        <p>{league.description}</p>
-                        <Link to={`/Leagues/${league.id}`}>
-                            <button>View Details</button>
-                        </Link>
-                    </div>
-                ))}
-            </div>
-        </div>
-    )
-}
+  return (
+    <div className="container">
+      <h2>All Leagues</h2>
+      <Table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {leagues.map((league) => (
+            <tr key={league.id}>
+              <td>{league.name}</td>
+              <td>{league.description}</td>
+              <td>
+                <Link to={`/Leagues/${league.id}`}>
+                  <button>View Details</button>
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </div>
+  );
+};

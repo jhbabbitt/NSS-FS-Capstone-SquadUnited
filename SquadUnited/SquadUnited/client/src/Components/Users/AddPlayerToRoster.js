@@ -115,10 +115,10 @@ const AddtoRoster = () => {
             {userRole && userRole.id === 2 && (
                 <p>You are already on this team.</p>
             )}
-            {isPlayerInLeague && (
+            {isPlayerInLeague && userRole.id === 2 &&(
                 <p>You are already on a team in this league.</p>
             )}
-            {currentUser?.id !== player.id ? (
+            {!userRole && currentUser?.id !== player.id ? (
                 <p>You are not authorized to manage this roster.</p>
             ) : null}
         </>

@@ -24,8 +24,6 @@ export const getCaptainsOnATeam = (id) => {
     }).then((response) => response.json()))
 }
 
-
-
 export const getUser = (id) => {
   return getToken().then((token) =>
     fetch(`${baseUrl}/details/${id}`, {

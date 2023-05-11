@@ -12,18 +12,19 @@ export const MyProfile = () => {
     }, []);
 
     return (
-        <>
-            {currentUser ? (
-                <div>
-                    <h4>{currentUser.name}</h4>
-                    <p>Email: {currentUser.email}</p>
-                    <Link to={`/profile/edit`}>
-                        <button>Edit Profile</button>
-                    </Link>
-                </div>
-            ) : (
-                <p>Loading...</p>
-            )}
-        </>
-    );
+        <div className="container">
+          {currentUser ? (
+            <div>
+              <h4>{currentUser.name}</h4>
+              <p>Email: {currentUser.email}</p>
+              <Link to={`/profile/edit`}>
+                <button>Edit Profile</button>
+              </Link>
+            </div>
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
+      );
+      
 }
